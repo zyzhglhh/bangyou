@@ -59,7 +59,7 @@
   <!-- <gap:plugin name="com.phonegap.plugins.pushplugin" source="npm"/> -->
   <gap:plugin name="cordova-plugin-whitelist" source="npm" gap:platform="android" /><!-- cordova 4.0.x后必须使用这个插件: 由于cli-5.1.1只有android是4.0.x版本, ios和windows平台还是3.x.x(不支持本插件, PGB编译会出错), 因此需要加 gap:platform="android", 使本元素只对android平台有效 -->
   <icon src="resources\android\icon\drawable-xhdpi-icon.png"/>
-  <gap:splash src="resources/Default@2x~iphone.png"/>
+  <gap:splash src="resources\ios\splash\Default@2x~iphone.png"/>
   <gap:splash src="resources/ios/splash/Default~iphone.png" gap:platform="ios" width="320" height="480"/>
   <gap:splash src="resources/ios/splash/Default@2x~iphone.png" gap:platform="ios" width="640" height="960"/>
   <gap:splash src="resources/ios/splash/Default-568h@2x~iphone.png" gap:platform="ios" width="640" height="1136"/>
