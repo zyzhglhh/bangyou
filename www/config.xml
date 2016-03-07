@@ -11,13 +11,13 @@
   <gap:platform name="android"/>
   <content src="index.html"/>
   <access origin="*"/>
-  <allow-navigation href="*" /><!-- android 4.0.x后必须改为这个 -->
-  <allow-intent href="*" />
+  <allow-navigation href="*"/>
+  <allow-intent href="*"/>
   <preference name="webviewbounce" value="false"/>
   <preference name="UIWebViewBounce" value="false"/>
   <preference name="DisallowOverscroll" value="true"/>
   <preference name="BackupWebStorage" value="none"/>
-  <preference name='phonegap-version' value='cli-5.2.0' /><!-- android有问题 -->
+  <preference name="phonegap-version" value="cli-5.2.0"/>
   <preference name="orientation" value="portrait"/>
   <preference name="target-device" value="universal"/>
   <preference name="fullscreen" value="false"/>
@@ -33,7 +33,7 @@
   <preference name="wechatappid" value="wx9123bbd027f0a99e"/>
   <preference name="SplashScreen" value="screen"/>
   <preference name="SplashScreenDelay" value="3000"/>
-  <preference name="AndroidPersistentFileLocation" value="Compatibility" />
+  <preference name="AndroidPersistentFileLocation" value="Compatibility"/>
   <!-- <gap:plugin name="org.apache.cordova.battery-status" source="npm"/> -->
   <gap:plugin name="cordova-plugin-camera" source="npm" />
   <!-- <gap:plugin name="org.apache.cordova.media-capture" source="npm"/> -->
@@ -57,21 +57,8 @@
   <!-- <gap:plugin name="nl.x-services.plugins.socialsharing" source="npm"/> -->
   <gap:plugin name="ionic-plugin-keyboard" source="npm"/>
   <!-- <gap:plugin name="com.phonegap.plugins.pushplugin" source="npm"/> -->
-  <gap:plugin name="cordova-plugin-whitelist" source="npm" gap:platform="android" /><!-- cordova 4.0.x后必须使用这个插件: 由于cli-5.1.1只有android是4.0.x版本, ios和windows平台还是3.x.x(不支持本插件, PGB编译会出错), 因此需要加 gap:platform="android", 使本元素只对android平台有效 -->
+  <gap:plugin name="cordova-plugin-whitelist" source="npm" gap:platform="android" />
   <icon src="resources/android/icon/drawable-xhdpi-icon.png"/>
-  <gap:splash src="resources/ios/splash/Default@2x~iphone.png"/>
-  <gap:splash src="resources/ios/splash/Default~iphone.png" gap:platform="ios" width="320" height="480"/>
-  <gap:splash src="resources/ios/splash/Default@2x~iphone.png" gap:platform="ios" width="640" height="960"/>
-  <gap:splash src="resources/ios/splash/Default-568h@2x~iphone.png" gap:platform="ios" width="640" height="1136"/>
-  <gap:splash src="resources/ios/splash/Default-667h.png" gap:platform="ios" width="750" height="1334"/>
-  <gap:splash src="resources/ios/splash/Default-736h.png" gap:platform="ios" width="1242" height="2208"/>
-  <gap:splash src="resources/ios/splash/Default-Portrait~ipad.png" gap:platform="ios" width="768" height="1024"/>
-  <gap:splash src="resources/ios/splash/Default-Portrait@2x~ipad.png" gap:platform="ios" width="1536" height="2048"/>
-  <gap:splash src="resources/android/splash/drawable-port-ldpi-screen.png" gap:platform="android" gap:qualifier="ldpi"/>
-  <gap:splash src="resources/android/splash/drawable-port-mdpi-screen.png" gap:platform="android" gap:qualifier="mdpi"/>
-  <gap:splash src="resources/android/splash/drawable-port-hdpi-screen.png" gap:platform="android" gap:qualifier="hdpi"/>
-  <gap:splash src="resources/android/splash/drawable-port-xhdpi-screen.png" gap:platform="android" gap:qualifier="xhdpi"/>
-  <gap:splash src="resources/android/splash/drawable-port-xxhdpi-screen.png" gap:platform="android" gap:qualifier="port-xxhdpi"/>
   <feature name="StatusBar">
     <param name="ios-package" value="CDVStatusBar" onload="true"/>
   </feature>
@@ -91,7 +78,7 @@
     <param name="ios-package" value="IonicKeyboard" onload="true"/>
   </feature>
   <gap:config-file platform="android" parent="/manifest">
-     <application android:debuggable="true" />
+    <application android:debuggable="true"/>
   </gap:config-file>
   <platform name="ios">
     <icon src="resources/ios/icon/icon.png" width="57" height="57"/>
