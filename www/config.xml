@@ -59,7 +59,7 @@
   <gap:plugin name="com.ionic.keyboard" source="npm"/>
   <gap:plugin name="com.phonegap.plugins.pushplugin" source="npm"/>
   <gap:plugin name="cordova-plugin-whitelist" source="npm" gap:platform="android"/>
-  <icon src="resources\android\icon\drawable-xhdpi-icon.png"/>
+  <icon src="resources/android/icon/drawable-xhdpi-icon.png"/>
   <feature name="StatusBar">
     <param name="ios-package" value="CDVStatusBar" onload="true"/>
   </feature>
