@@ -1,0 +1,33 @@
+<ion-view view-title="线上药店">	
+
+	<ion-nav-bar class="bar-positive">
+		<!-- <ion-nav-buttons side="left">
+	    <a href="#/home" class="button button-icon icon ion-ios-arrow-back"></a>
+	    </ion-nav-buttons>
+	    <ion-nav-title class="logo">
+	      {{ globalCommon.titleEhome }}
+	    </ion-nav-title> -->
+	    <ion-nav-back-button class="button-icon ion-ios-arrow-left"></ion-nav-back-button>
+
+	   <ion-nav-buttons side="right">
+	      <a class="button button-icon button-clear " ng-click="actions.toHljShop()">商城     
+	      </a>
+	    </ion-nav-buttons>
+	</ion-nav-bar>
+
+	<ion-content>
+		<ion-refresher pulling-text="释放刷新..." refreshing-text="正在刷新..." on-refresh="actions.doRefresh()"></ion-refresher>
+	  	<ion-list>
+	  		
+
+	  		<ion-item ng-repeat="order in orders">
+				<h3>订单号:{{order.shopDealSeqNo}}</h3>
+				<h4>金额:{{order.money | currency: '￥'}}</h4>
+	      </ion-item>
+
+
+	  	</ion-list>
+	  	<ion-infinite-scroll ng-if="isMore" on-infinite="loadMore()" distance="1%"></ion-infinite-scroll>
+  	</ion-content>
+
+</ion-view>
