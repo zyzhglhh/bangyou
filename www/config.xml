@@ -34,7 +34,6 @@
   <preference name="SplashScreen" value="screen"/>
   <preference name="SplashScreenDelay" value="3000"/>
   <preference name="AndroidPersistentFileLocation" value="Compatibility" />
-  <!-- <gap:plugin name="org.apache.cordova.battery-status" source="npm"/> -->
   <gap:plugin name="org.apache.cordova.battery-status" source="npm"/>
   <gap:plugin name="org.apache.cordova.camera" source="npm"/>
   <gap:plugin name="org.apache.cordova.media-capture" source="npm"/>
