@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="net.go5le.yiyangbao" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
-  <name>帮友</name>
+<widget id="net.go5le.youbang" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+  <name>友帮</name>
   <description>
-    bangyou App.
+    youbang App.
   </description>
   <author email="alexgzhou@163.com" href="http://go5le.net/">
     Alex Zhou
@@ -89,10 +89,6 @@
   </feature>
   <feature name="Keyboard">
     <param name="ios-package" value="IonicKeyboard" onload="true"/>
-  </feature>
-  <feature name="debug-server" required="true">
-    <param name="domain" value="http://192.168.1.99:8080"/>
-    <param name="key" value="net.go5le.yiyangbao"/>
   </feature>
   <gap:config-file platform="android" parent="/manifest">
      <application android:debuggable="true" />
