@@ -1030,9 +1030,19 @@ angular.module('yiyangbao.controllers.user', [])
 
 
 }])
-.controller('userYisheng', ['$scope', 'Consumption',  function($scope, Consumption){
+.controller('userReGhRevtion', ['$scope', '$stateParams', '$sce', function($scope, $stateParams, $sce) {
+    var channel = $stateParams.channel,
+        orderno = $stateParams.orderno,
+        yyToken = $stateParams.yyToken;
+
+    $scope.reyuyueUrl = $sce.trustAsResourceUrl('http://weixin.diandianys.com/HTML/ryt.php#/order/cancel?channel='+ channel +'&token='+ yyToken +'&orderNo=' + orderno);
+
+
+}])
+.controller('userYisheng', ['$scope', '$state', 'Consumption', 'PageFunc', 'Storage',  function($scope, $state, Consumption, PageFunc, Storage){
     var limit = 20, skip = 0;
-    
+      
+
     $scope.orders = [];
     $scope.isMore = true;
     $scope.loadMore = function() {
@@ -1058,6 +1068,21 @@ angular.module('yiyangbao.controllers.user', [])
     };
 
     $scope.actions = {
+        doReGhRevtion: function(orderno) {
+
+            PageFunc.confirm('您确认要取消预约吗!', '消息').then(function(res) {
+                if (res) {
+                    var isIPad = ionic.Platform.isIPad();
+                    var isIOS = ionic.Platform.isIOS();
+                    var isAndroid = ionic.Platform.isAndroid(); 
+                    var channel = (isIOS || isIPad) ? '22' : '21';   //android = 21 ios = 22
+
+                    
+                    $state.go('user.reghrevtion', {channel: channel, orderno: orderno, yyToken: Storage.get('yyToken')});
+
+                }
+            });
+        },
         doRefresh: function(){
             Consumption.ghOrder({
                 page: 0,
@@ -1074,8 +1099,6 @@ angular.module('yiyangbao.controllers.user', [])
             });
         }
     };
-
-
     
 }])
 .controller('userOutline', ['$scope', function($scope){

@@ -28,7 +28,8 @@
 				<p>就诊时间:{{order.ghyyInfo.clinicDate}} {{order.ghyyInfo.clinicTime | fltClinicTime}} {{order.ghyyInfo.clinicPm | fltClinicPm}}</p>
 				<p>预约序号:{{order.ghyyInfo.yySort}}</p>
 				<p>取号密码:{{order.batchNo}}</p>
-				<a class="button button-small" ng-if="order.status.isRevoked === false" href="{{'http://weixin.diandianys.com/HTML/ryt.php#/order/cancel?channel='+ channel +'&token='+ yyToken +'&orderNo=' + order.shopDealSeqNo}}">取消预约</a>
+				<a class="button button-small" ng-if="order.status.isRevoked === false" ng-click="actions.doReGhRevtion(order.shopDealSeqNo)">取消预约</a>
+				<!-- <a class="button button-small" ng-if="order.status.isRevoked === false" href="{{'http://weixin.diandianys.com/HTML/ryt.php#/order/cancel?channel='+ channel +'&token='+ yyToken +'&orderNo=' + order.shopDealSeqNo}}">取消预约</a> -->
 	        </ion-item>
 
 

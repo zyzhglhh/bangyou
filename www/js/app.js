@@ -326,6 +326,21 @@ app
                 }
             }
         })
+        .state('user.reghrevtion', {    
+            url: '/reghrevtion',
+            views: {
+                'userHome': {
+                    templateUrl: 'partials/user/reghrevtion.html',
+                    controller: 'userReGhRevtion',
+
+                }
+            },
+            params: {
+                'channel': '',
+                'orderno': '',
+                'yyToken': ''
+            }
+        })
         .state('user.yisheng', {    
             url: '/yisheng',
             views: {
