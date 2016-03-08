@@ -28,6 +28,7 @@ angular.module('yiyangbao.controllers.user', [])
         $q.all([deferredInfo.promise, deferredBarcode.promise]).then(function (data) { 
             
             $scope.accountInfo.barcode = data[1] + ')|(' + (data[0].amountInfo.available || 0);
+            console.log($scope.accountInfo.barcode);
             deferred.resolve();
         }, function (errors) {
             console.log(errors);
@@ -157,7 +158,11 @@ angular.module('yiyangbao.controllers.user', [])
                     for(var j = 0; j < data.inces[i].amountDetails.length; j++ ){
 
                         $scope.config.mediTypes[ data.inces[i].inceType ].push(data.inces[i].amountDetails[j]);
+                        $scope.meidTypeOne = $scope.config.mediTypes[ data.inces[i].inceType ];
                     }
+
+                    $scope.isMore = Object.keys($scope.config.mediTypes).length > 1;
+                    $scope.isOne = Object.keys($scope.config.mediTypes).length == 1;
                     
                     inces[data.inces[i].inceType] = {
                         incePolicyId: data.inces[i]._id,
@@ -910,6 +915,11 @@ angular.module('yiyangbao.controllers.user', [])
 }])
 .controller('userOnlinecart', ['$scope', function($scope){
 }])
+.controller('userYdOnline', ['$scope', '$sce', 'Storage', function($scope, $sce, Storage){
+
+    $scope.ydonlineUrl = $sce.trustAsResourceUrl('http://www.yjk818.com/mobile/yyb_mobileuser_api.php?token=' + Storage.get('token'));
+     
+}])
 .controller('userYdOrder', ['$scope', '$window', 'Token', 'Storage', 'Consumption', function($scope, $window, Token, Storage, Consumption){
     var limit = 20, skip = 0;
 
@@ -939,11 +949,7 @@ angular.module('yiyangbao.controllers.user', [])
     };
 
 
-    $scope.actions= {
-        toHljShop: function(){
-            
-            $window.location.href = 'http://www.yjk818.com/mobile/yyb_mobileuser_api.php?token=' + Storage.get('token');
-        },
+    $scope.actions= {        
         doRefresh: function(){
             Consumption.hljOrder({
                 page: 0,
@@ -969,67 +975,64 @@ angular.module('yiyangbao.controllers.user', [])
 }])
 .controller('userYangsheng', ['$scope', function($scope){
 }])
-.controller('userYisheng', ['$scope', '$state', '$window', 'Storage', 'Token', 'Consumption', 'PageFunc', 'User', function($scope, $state, $window, Storage, Token, Consumption, PageFunc, User){
-    var limit = 20, skip = 0;
+.controller('userGhReservation', ['$scope', '$sce', 'PageFunc', 'Token', 'User', 'Storage', function($scope, $sce, PageFunc, Token, User, Storage) {
     var isIPad = ionic.Platform.isIPad();
     var isIOS = ionic.Platform.isIOS();
-    var isAndroid = ionic.Platform.isAndroid();
+    var isAndroid = ionic.Platform.isAndroid();   
     
     //判断平台
     $scope.yyToken = Storage.get('yyToken');
     $scope.channel = (isIOS || isIPad) ? '22' : '21';   //android = 21 ios = 22
 
-    $scope.toYuYueUrl = function() {
-        var proArr = [];
+    var proArr = [];
         
-        if ( !Token.curUserMobile()) {
-            proArr.push({msg:'请输入手机号', func: 'updateTkn', field:'mb'});
-        }
+    if ( !Token.curUserMobile()) {
+        proArr.push({msg:'请输入手机号', func: 'updateTkn', field:'mb'});
+    }
 
-        if ( !Token.curUserCardID()) {
-            proArr.push({msg:'请输入身份证', func: 'updateTkn', field:'no'});
-        }
+    if ( !Token.curUserCardID()) {
+        proArr.push({msg:'请输入身份证', func: 'updateTkn', field:'no'});
+    }
 
-        var yuyueUrl = 'http://weixin.diandianys.com/HTML/ryt.php#/hospital/list';
+    var yyUrl = 'http://weixin.diandianys.com/HTML/ryt.php#/hospital/list';
 
-        var fdCount = 0;
-        proArr.forEach(function(pro){
+    var fdCount = 0;
+
+    proArr.forEach(function(pro){
             
-            PageFunc.prompt(pro.msg, '完善资料', 'text').then(function(res){
-                if ( res) {
-                    var fieldName = pro.field, funcName = pro.func;
-                    var upObj = {};
-                    upObj['field'] = pro.field;
-                    upObj[fieldName] = res; 
-                    User[ funcName ](upObj).then(function(data){
-                        Storage.set('yyToken', data.results.newToken);
-                        fdCount++;
-                        $scope.yyToken = Storage.get('yyToken');
+        PageFunc.prompt(pro.msg, '完善资料', 'text').then(function(res){
+            if ( res) {
+                var fieldName = pro.field, funcName = pro.func;
+                var upObj = {};
+                upObj['field'] = pro.field;
+                upObj[fieldName] = res; 
+                User[ funcName ](upObj).then(function(data){
+                    Storage.set('yyToken', data.results.newToken);
+                    fdCount++;
+                    $scope.yyToken = Storage.get('yyToken');
 
 
-                        if ( fdCount === proArr.length){
-                            $window.location.href = yuyueUrl + '?channel='+$scope.channel+'&token=' + $scope.yyToken;
-                        }
+                    if ( fdCount === proArr.length){
+                        $scope.yuyueUrl = $sce.trustAsResourceUrl(yyUrl + '?channel='+$scope.channel+'&token=' + $scope.yyToken);
+                    }
 
-                    }, function(err) {
-                        console.log(err);
-                    })
-                }
-            });
-            
+                }, function(err) {
+                    console.log(err);
+                })
+            }
         });
-
-        if (proArr.length === 0) {
-            $window.location.href = yuyueUrl + '?channel='+$scope.channel+'&token=' + $scope.yyToken;
-        }
         
-                
-    };
-   
+    });
+
+    if (proArr.length === 0) {
+        $scope.yuyueUrl = $sce.trustAsResourceUrl(yyUrl + '?channel='+$scope.channel+'&token=' + $scope.yyToken);
+    }
 
 
+}])
+.controller('userYisheng', ['$scope', 'Consumption',  function($scope, Consumption){
+    var limit = 20, skip = 0;
     
-
     $scope.orders = [];
     $scope.isMore = true;
     $scope.loadMore = function() {
@@ -1071,6 +1074,7 @@ angular.module('yiyangbao.controllers.user', [])
             });
         }
     };
+
 
     
 }])

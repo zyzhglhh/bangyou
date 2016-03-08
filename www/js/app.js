@@ -272,6 +272,15 @@ app
                 }
             }
         })
+        .state('user.ydonline', {    
+            url: '/ydonline',
+            views: {
+                'userHome': {
+                    templateUrl: 'partials/user/ydonline.html',
+                    controller: 'userYdOnline'
+                }
+            }
+        })
         .state('user.ydorder', {    
             url: '/ydorder',
             views: {
@@ -305,6 +314,15 @@ app
                 'userHome': {
                     templateUrl: 'partials/user/yangsheng.html',
                     controller: 'userYangsheng'
+                }
+            }
+        })
+        .state('user.ghReservation', {    
+            url: '/ghreservation',
+            views: {
+                'userHome': {
+                    templateUrl: 'partials/user/ghReservation.html',
+                    controller: 'userGhReservation'
                 }
             }
         })
