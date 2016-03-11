@@ -254,12 +254,30 @@ app
                 }
             }
         })
+        .state('user.department', {    
+            url: '/department',
+            views: {
+                'userHome': {
+                    templateUrl: 'partials/user/department.html',
+                    controller: 'userDepartmentCtrl'
+                }
+            }
+        })
         .state('user.health', {    
-            url: '/health',
+            url: '/health/{id:[0-9]+}',
             views: {
                 'userHome': {
                     templateUrl: 'partials/user/health.html',
                     controller: 'userHealth'
+                }
+            }
+        })
+        .state('user.healthitem', {    
+            url: '/healthitem/{id:[0-9a-z]+}',
+            views: {
+                'userHome': {
+                    templateUrl: 'partials/user/healthitem.html',
+                    controller: 'userHealthItem'
                 }
             }
         })

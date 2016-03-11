@@ -911,7 +911,66 @@ angular.module('yiyangbao.controllers.user', [])
 }])
 .controller('userSearch', ['$scope', function ($scope) {
 }])
-.controller('userHealth', ['$scope', function($scope){
+.controller('userDepartmentCtrl', ['$scope', 'CONFIG', function($scope, CONFIG) {
+    $scope.postCategorys = CONFIG.postCategorys[10];
+}])
+.controller('userHealth', ['$scope', '$stateParams', 'Post', function($scope, $stateParams, Post){
+    var skip = 0, limit = 20;
+    var it = $stateParams.id;
+    $scope.healths = [];
+    $scope.orders = [];
+    $scope.isMore = true;
+    $scope.loadMore = function() {
+        
+        Post.getList({
+            page: 0,
+            skip: skip,
+            limit: limit,
+            it: it
+        }).then(function(data){
+         
+            if (data.results.length > 0 && data.results.length === limit){
+                $scope.isMore = true;
+            } else {
+                $scope.isMore = false;
+            }
+            
+            $scope.healths.push.apply($scope.healths, data.results);
+            skip = $scope.healths.length;
+            $scope.$broadcast('scroll.infiniteScrollComplete');
+        }, function(err) {
+            console.log(err);
+        });
+    };
+
+    $scope.actions = {
+        doRefresh: function(){
+            Post.getList({
+                page: 0,
+                skip: 0,
+                limit: limit,
+                it: it
+            })
+            .then(function(data){
+                $scope.healths = data.results;
+            }, function(err){
+                console.log(err);
+            })
+            .finally(function () {
+                $scope.$broadcast('scroll.refreshComplete');
+            });
+        }
+    };
+
+}])
+.controller('userHealthItem', ['$scope', '$stateParams', '$sce', 'Post', function($scope, $stateParams, $sce, Post) {
+    $scope.health = {};
+    Post.getOne({id: $stateParams.id}).then(function(data) {
+        $scope.health = data.results;
+        $scope.health.content = $sce.trustAsResourceUrl(data.results.post);
+    }, function(err) {
+        console.log(err);
+    })
 }])
 .controller('userOnlinecart', ['$scope', function($scope){
 }])

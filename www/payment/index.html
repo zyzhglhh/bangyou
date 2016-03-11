@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+
+    <meta name="format-detection" content="telephone=no">
+    <base href="/app/">
+    <title>补充医疗支付接口</title>
+    <link href="lib/ionic/release/css/ionic.min.css" rel="stylesheet">
+
+    <!-- ionic/angularjs scripts -->
+    <script src="lib/ionic/release/js/ionic.bundle.min.js"></script>
+    <script src="lib/angular-resource/angular-resource.min.js"></script>
+
+    <script src="payment/js/app.js"></script>
+
+  </head>
+  <body ng-app="paymentApp" ng-controller="paymentAppCtrl">
+    <!-- 
+      The views will be rendered in the <ion-nav-view> directive below
+      Templates are in the /templates folder (but you could also
+      have templates inline in this html file if you'd like).
+    -->
+    <ion-nav-view>
+      <ion-view>
+	      <ion-nav-bar class="bar-positive">
+				  <ion-nav-buttons side="left">
+			    <a href="#/brand" class="button button-icon icon ion-ios-arrow-back"></a>
+			    </ion-nav-buttons>
+			    <ion-nav-title>医疗金支付</ion-nav-title>
+				</ion-nav-bar>
+      	<ion-content class="has-header">
+
+      		
+					<div class="list">
+					  <label class="item item-input">
+					    <input type="text" placeholder="请输入帐号/手机号">
+					  </label>
+					  <label class="item item-input">
+					    <input type="text" placeholder="请输入支付密码">
+					  </label>
+					  <button class="button button-full button-positive">
+						  确认
+						</button>
+						<span>由颐养保提供支持</span>
+					</div>
+
+ 
+
+
+      	</ion-content>
+      </ion-view>
+  	</ion-nav-view>
+  </body>
+</html>

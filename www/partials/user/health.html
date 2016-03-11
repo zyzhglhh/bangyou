@@ -1,77 +1,15 @@
 <ion-view view-title="网上医院">
 	<ion-content>
+	<ion-refresher pulling-text="释放刷新..." refreshing-text="正在刷新..." on-refresh="actions.doRefresh()"></ion-refresher>
 		<div class="list">
-			<a class="item item-avatar">
-				<img ng-src="img/wangshang/lgz.jpg">
-				<h2>郎冠子</h2>
-				<p>副主任医师</p>
-				<p>擅长：心脑血管疾病、肾病、糖尿病、老年性慢支、中风偏瘫等病症的综合治疗</p>
-				<p>门诊时间:周一 三全天</p>
-			</a>
-			<a class="item item-avatar">
-				<img ng-src="img/wangshang/brz.jpg">
-				<h2>包汝中</h2>
-				<p>副主任医师</p>
-				<p>擅长：各型癌症的手术或放化疗术后的机体康复</p>
-				<p>门诊时间:周一 三全天</p>
-			</a>
-			<a class="item item-avatar">
-				<img ng-src="img/wangshang/czb.jpg">
-				<h2>曹宝珍</h2>
-				<p>主任医师</p>
-				<p>擅长：中西医结合肿瘤、血液病临床</p>
-				<p>坐诊时间：周日全天</p>
-			</a>
-			<a class="item item-avatar">
-				<img ng-src="img/wangshang/cj.jpg">
-				<h2>丛晶</h2>
-				<p>主任中医师</p>
-				<p>擅长：中药汤剂治疗</p>
-				<p>坐诊时间：每周日下午</p>
-			</a>
-			<a class="item item-avatar">
-				<img ng-src="img/wangshang/dzh.jpg">
-				<h2>戴志红</h2>
-				<p>副主任中医师</p>
-				<p>擅长：中西医结合诊治内科疾病</p>
-				<p>门诊时间：周三全天</p>
-			</a>
-			<a class="item item-avatar">
-				<img ng-src="img/wangshang/ysq.jpg">
-				<h2>董圣群</h2>
-				<p>主任医师</p>
-				<p>擅长：内科疾病、皮肤疾病</p>
-				<p>门诊时间：周三上午</p>
-			</a>
-			<a class="item item-avatar">
-				<img ng-src="img/wangshang/fq.jpg">
-				<h2>方青</h2>
-				<p>主任医师</p>
-				<p>擅长：内科疾病、妇杂病</p>
-				<p>门诊时间：周二下午</p>
-			</a>
-			<a class="item item-avatar">
-				<img ng-src="img/wangshang/hjf.jpg">
-				<h2>何俊芳</h2>
-				<p>副主任医师</p>
-				<p>擅长：妇科疾病、慢性萎缩性胃炎及各种肿瘤的康复治疗</p>
-				<p>门诊时间：周一周二周四全天</p>
-			</a>
-			<a class="item item-avatar">
-				<img ng-src="img/wangshang/jcm.jpg">
-				<h2>姜初明</h2>
-				<p>副主任医师</p>
-				<p>擅长：肿瘤的中西医结合临床诊治</p>
-				<p>门诊时间：隔周日上午</p>
-			</a>
-			<a class="item item-avatar">
-				<img ng-src="img/wangshang/jgl.jpg">
-				<h2>金国梁</h2>
-				<p>浙江中医药大学教授、主任医师、博士生导师</p>
-				<p>擅长：中医养生康复、中医药防治肿瘤</p>
-				<p>门诊时间：周二下午周六上午</p>
-			</a>
-
+			<a class="item item-avatar" ng-repeat="health in healths" ng-href="#/user/healthitem/{{health._id}}" >
+				<img ng-src="{{health.resources.img[0]}}">
+				<h2>{{health.title}}</h2>
+				<p>{{health.subTitle}}</p>
+				<p>擅长：{{health.action}}</p>
+				<p>门诊时间:{{health.itemCert}}</p>
+			</a>	
 		</div>
+		<ion-infinite-scroll ng-if="isMore" on-infinite="loadMore()" distance="1%"></ion-infinite-scroll>
 	</ion-content>
 </ion-view>

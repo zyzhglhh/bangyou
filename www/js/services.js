@@ -15,6 +15,22 @@ angular.module('yiyangbao.services', ['ngResource'])
     saveToPhotoAlbum: false,
     cameraDirection: 0 
   },
+  postCategorys: {
+    10: [
+      {
+        id: 100001, 
+        text: '仁易堂',
+        childCats: [
+          {id:10000101, text: '中医肿瘤科'},
+          {id:10000102, text: '中西医结合科'},
+          {id:10000103, text: '中医科'},
+          {id:10000104, text: '中医妇科'},
+          {id:10000105, text: '中医皮肤科'},
+          {id:10000106, text: '中医针灸推拿科'}
+        ] 
+      }
+    ]
+  },
   uploadOptions: {
     fileExt: '.jpg', 
     httpMethod: 'POST', 
@@ -183,7 +199,8 @@ angular.module('yiyangbao.services', ['ngResource'])
       path:'post',
     }, {
       post: {method:'POST', params:{route:'post'}, timeout: 10000},
-      getList: {method:'POST', params:{route: 'getList'}, timeout: abort.promise},
+      getList: {method:'GET', params:{route: 'getList'}, timeout: abort.promise},
+      getOne: {method:'GET', params:{route: 'getOne'}, timeout: 10000},
       modify: {method:'POST', params:{route: 'modify'}, timeout: 10000},
       updateOne: {method:'POST', params:{route: 'updateOne'}, timeout: 10000},
       removeOne: {method:'GET', params:{route: 'removeOne'}, timeout: 10000}
@@ -1213,6 +1230,24 @@ angular.module('yiyangbao.services', ['ngResource'])
       Data.Post.post(post, function (data, headers) {
         deferred.resolve(data);
       }, function (err) {
+        deferred.reject(err);
+      });
+      return deferred.promise;
+    },
+    getList: function(params){
+      var deferred = $q.defer();
+      Data.Post.getList(params, function(data, headers) {
+        deferred.resolve(data);
+      }, function(err) {
+        deferred.reject(err);
+      });
+      return deferred.promise;
+    },
+    getOne: function(params) {
+      var deferred = $q.defer();
+      Data.Post.getOne(params, function(data, headers) {
+        deferred.resolve(data);
+      }, function(err) {
         deferred.reject(err);
       });
       return deferred.promise;

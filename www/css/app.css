@@ -89,6 +89,13 @@
 	.logo {
 		width: 72px;
 	}
+
+	.post-content p img {
+		display: block;
+		margin-right: auto;
+		margin-left: auto; 
+		width: 100%;
+	}
 	/*.item-text-wrap.item {
 		border-color: #FB9E03;
 		color: #000;
