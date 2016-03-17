@@ -27,7 +27,7 @@ angular.module('paymentApp', dependencies)
 
 angular.module('paymentApp.services', ['ngResource'])
 .constant('CONFIG', {
-    baseUrl: 'http://localhost/'
+    baseUrl: '/'
 })
 .factory('Data', ['$resource', '$q', 'CONFIG', '$interval', function ($resource, $q, CONFIG, $interval) {
   var self = this;
@@ -106,8 +106,8 @@ angular.module('paymentApp.controllers', [])
     var auth = query.ah;
     $scope.showUrl = query.surl;
     $scope.lg = {
-      username: '640111199101181234',
-      password: '181234'
+      username: '',
+      password: ''
     };
 
     /*Api.getTrade({sign:sign}).then(function(data){
