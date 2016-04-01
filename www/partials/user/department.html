@@ -1,1 +1,1 @@
-<ion-view view-title="网上医院"><ion-content><div class="list"><div ng-repeat="postCat in postCategorys"> <a class="item" ng-repeat="postItem in postCat.childCats" ng-href="#/user/health/{{postItem.id}}">{{postItem.text}}</a></div></div></ion-content></ion-view>
+<ion-view view-title="网上医院"><ion-content><div class="list"> <a class="item" ng-repeat="postItem in postCategorys" ng-href="#/user/health/{{postItem.catId}}">{{postItem.catName}}</a></div></ion-content></ion-view>
