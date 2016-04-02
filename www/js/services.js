@@ -15,22 +15,6 @@ angular.module('yiyangbao.services', ['ngResource'])
     saveToPhotoAlbum: false,
     cameraDirection: 0 
   },
-  postCategorys: {
-    10: [
-      {
-        id: 100001, 
-        text: '仁易堂',
-        childCats: [
-          {id:10000101, text: '中医肿瘤科'},
-          {id:10000102, text: '中西医结合科'},
-          {id:10000103, text: '中医科'},
-          {id:10000104, text: '中医妇科'},
-          {id:10000105, text: '中医皮肤科'},
-          {id:10000106, text: '中医针灸推拿科'}
-        ] 
-      }
-    ]
-  },
   uploadOptions: {
     fileExt: '.jpg', 
     httpMethod: 'POST', 
@@ -173,6 +157,8 @@ angular.module('yiyangbao.services', ['ngResource'])
       path:'ince',
     }, {
       getInfo: {method:'POST', params:{route: 'getInfo'}, timeout: 10000},
+      getYljInfo: {method:'POST', params:{route: 'getYljInfo'}, timeout: 10000},
+      getBcyljInfo: {method:'POST', params:{route: 'getBcyljInfo'}, timeout: 10000},
       getList: {method:'POST', params:{route: 'getList'}, timeout: abort.promise},
       modify: {method:'POST', params:{route: 'modify'}, timeout: 10000},
       remove: {method:'POST', params:{route: 'remove'}, timeout: 10000},
@@ -206,6 +192,16 @@ angular.module('yiyangbao.services', ['ngResource'])
       removeOne: {method:'GET', params:{route: 'removeOne'}, timeout: 10000}
     });
   };
+
+  var Category = function() {
+    return $resource(CONFIG.baseUrl + ':path/:route', {
+      path: 'category',
+    },{
+      getSome: {method:'POST', params:{route: 'getSome'}, timeout: abort.promise},   
+      getOne: {method:'GET', params:{route: 'getOne'}, timeout: 10000},   
+    })
+  };
+
   var Resource = function () {
     return $resource(CONFIG.baseUrl + ':path/:route', {
       path:'multer',
@@ -229,6 +225,7 @@ angular.module('yiyangbao.services', ['ngResource'])
       self.Insurance = Insurance();
       self.Consumption = Consumption();
       self.Post = Post();
+      self.Category = Category();
       self.Resource = Resource();
       self.Interface = Interface();
     }, 0, 1);
@@ -237,6 +234,7 @@ angular.module('yiyangbao.services', ['ngResource'])
   self.Insurance = Insurance();
   self.Consumption = Consumption();
   self.Post = Post();
+  self.Category = Category();
   self.Resource = Resource();
   self.Interface = Interface();
   return self;
@@ -1098,6 +1096,24 @@ angular.module('yiyangbao.services', ['ngResource'])
       });
       return deferred.promise;
     },
+    getYljInfo: function (query, options, fields) { 
+      var deferred = $q.defer();
+      Data.Insurance.getYljInfo({query: query, options: options, fields: fields}, function (data, headers) { 
+        deferred.resolve(data);
+      }, function (err) {
+        deferred.reject(err);
+      });
+      return deferred.promise;
+    },
+    getBcyljInfo: function (query, options, fields) { 
+      var deferred = $q.defer();
+      Data.Insurance.getBcyljInfo({query: query, options: options, fields: fields}, function (data, headers) { 
+        deferred.resolve(data);
+      }, function (err) {
+        deferred.reject(err);
+      });
+      return deferred.promise;
+    },
     getList: function (query, options, fields) {
       var deferred = $q.defer();
       Data.Insurance.getList(query, function (data, headers) {
@@ -1221,6 +1237,29 @@ angular.module('yiyangbao.services', ['ngResource'])
       });
       return deferred.promise;
     }
+  };
+}])
+
+.factory('Category', ['$q', 'Data', function($q, Data) {
+  return {
+    getSome: function(query, options, fields) {
+      var deferred = $q.defer();
+      Data.Category.getSome({query: query, options: options, fields: fields}, function(data, headers){
+        deferred.resolve(data);
+      }, function(err) {
+        deferred.reject(err);
+      });
+      return deferred.promise;
+    },
+    getOne: function(query) {
+      var deferred = $q.defer();
+      Data.Category.getOne(query, function(data, headers) {
+        deferred.resolve(data);
+      }, function(err){
+        deferred.reject(err);
+      });
+      return deferred.promise;
+    },
   };
 }])
 .factory('Post', ['Storage', 'Data', 'Token', '$state', '$q', 'jwtHelper', function (Storage, Data, Token, $state, $q, jwtHelper) {

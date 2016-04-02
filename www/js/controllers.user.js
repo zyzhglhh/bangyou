@@ -28,7 +28,7 @@ angular.module('yiyangbao.controllers.user', [])
         $q.all([deferredInfo.promise, deferredBarcode.promise]).then(function (data) { 
             
             $scope.accountInfo.barcode = data[1] + ')|(' + (data[0].amountInfo.available || 0);
-            console.log($scope.accountInfo.barcode);
+            //console.log($scope.accountInfo.barcode);
             deferred.resolve();
         }, function (errors) {
             console.log(errors);
@@ -42,7 +42,7 @@ angular.module('yiyangbao.controllers.user', [])
         
         // 考虑到一个用户有多保单的情况下,inceType = 3 医疗补充保险金额可以进行线下消费,把这条保单筛选出来
         var ince = AccInfo.inces.filter(function(ince){
-            if ( ince.inceType === '3') {
+            if ( ince.inceType === '5') {
                 return true;
             }
         })[0] || {};
@@ -170,7 +170,7 @@ angular.module('yiyangbao.controllers.user', [])
                         inceId : data.inces[i].inceId._id,
                         servId : data.inces[i].servId._id,
                         inceGenNum: data.inces[i].inceGenNum,
-                    }
+                    };
                 }
 
                 $scope.cons = {
@@ -265,6 +265,7 @@ angular.module('yiyangbao.controllers.user', [])
             });
         },
         chgInceType: function (type) {
+
             $scope.config.curMediTypes = $scope.config.mediTypes[type];
             $scope.cons['incePolicyId'] = inces[type].incePolicyId;
             $scope.cons['unitId'] = inces[type].unitId;
@@ -911,8 +912,13 @@ angular.module('yiyangbao.controllers.user', [])
 }])
 .controller('userSearch', ['$scope', function ($scope) {
 }])
-.controller('userDepartmentCtrl', ['$scope', 'CONFIG', function($scope, CONFIG) {
-    $scope.postCategorys = CONFIG.postCategorys[10];
+.controller('userDepartmentCtrl', ['$scope', 'Category', function($scope, Category) {
+    
+    Category.getSome({parentPath:'^1,2,'}).then(function(data) {
+        $scope.postCategorys = data.results;
+    }, function(err) {
+        console.log(err);
+    })
 }])
 .controller('userHealth', ['$scope', '$stateParams', 'Post', function($scope, $stateParams, Post){
     var skip = 0, limit = 20;
@@ -1030,7 +1036,12 @@ angular.module('yiyangbao.controllers.user', [])
 }])
 .controller('userBxproduct', ['$scope', function($scope){
 }])
-.controller('userMyguang', ['$scope', function($scope){
+.controller('userMyguang', ['$scope', 'Category' , function($scope, Category){
+    Category.getSome({parentPath:'^4,'}).then(function(data) {
+        $scope.postCategorys = data.results;
+    }, function(err) {
+        console.log(err);
+    })
 }])
 .controller('userYangsheng', ['$scope', function($scope){
 }])
@@ -1162,15 +1173,164 @@ angular.module('yiyangbao.controllers.user', [])
 }])
 .controller('userOutline', ['$scope', function($scope){
 }])
-.controller('userJiahao', ['$scope', function($scope){
+.controller('userJiahao', ['$scope', '$stateParams', 'Category', 'Post', function($scope, $stateParams, Category, Post){
+    var limit = 20, skip = 0;
+    var catId = $stateParams.id;    
+    Category.getOne({id: catId}).then(function(data){
+        $scope.category = data.results;
+    }, function(err) {
+        console.log(err);
+    });
+
+    $scope.category = {};
+    $scope.posts = [];
+    $scope.isMore = true;
+    $scope.loadMore = function(){
+        Post.getList({
+            page: 0,
+            skip: skip,
+            limit: limit,
+            it: catId
+        }).then(function(data){         
+            if (data.results.length > 0 && data.results.length === limit){
+                $scope.isMore = true;
+            } else {
+                $scope.isMore = false;
+            }            
+            $scope.posts.push.apply($scope.posts, data.results);
+            skip = $scope.posts.length;
+            $scope.$broadcast('scroll.infiniteScrollComplete');
+        }, function(err) {
+            console.log(err);
+        });
+    };
+
+    $scope.actions = {
+        doRefresh: function(){
+            Post.getList({
+                page: 0,
+                skip: 0,
+                limit: limit,
+                it: catId
+            })
+            .then(function(data){
+                $scope.posts = data.results;
+            }, function(err){
+                console.log(err);
+            })
+            .finally(function () {
+                $scope.$broadcast('scroll.refreshComplete');
+            });
+        }
+    };
 }])
+
+
+.controller('userJiahaoItem', ['$scope', '$stateParams', '$sce', 'Post', function($scope, $stateParams, $sce, Post) {
+    $scope.jiahao = {};
+    Post.getOne({id: $stateParams.id}).then(function(data) {
+        $scope.jiahao = data.results;
+        $scope.jiahao.content = $sce.trustAsResourceUrl(data.results.post);
+    }, function(err) {
+        console.log(err);
+    })
+}])
+
+
 .controller('userGuahao', ['$scope', function($scope){
 }])
 .controller('userArticle', function($scope, $stateParams){
-    console.log($stateParams.typeid, $stateParams.id);
+    
     var articles = ['健康管理','线上药店','健康商城','保险产品', '名医馆','名家养生'];
     var article = $scope.article = {};
     article.catname= articles[$stateParams.typeid];
     article.title = '杭州友帮';
 })
+.controller('userYljBalanceCtrl', ['$scope', 'Insurance', function($scope, Insurance) {
+
+    var initYljInfo = function() {
+        Insurance.getYljInfo({}).then(function(data) {
+            $scope.ince = data.results;
+            var inceItems = data.results.inceItems;
+            var sumUnitAmount = 0, sumProfileAmount = 0;
+            var total = {
+                sumUnitAmount: 0,
+                sumProfileAmount: 0,
+                sumUnitInterest: 0,
+                sumInterest: 0
+            };
+            for(var i = 0; i < inceItems.length; i++) {
+                
+                if (inceItems[i].detailType.substring(inceItems[i].detailType.length -1) != '2') {
+                    total.sumUnitAmount += parseFloat(inceItems[i].unitPrice);
+                    total.sumProfileAmount += parseFloat(inceItems[i].price);
+                    total.sumUnitInterest += parseFloat(inceItems[i].cycleUnitInterest);
+                    total.sumInterest += parseFloat(inceItems[i].cycleInterest);
+                    inceItems[i].month = new Date(inceItems[i].month);
+                }
+                
+            }
+            
+            $scope.ince['total'] = total;
+
+            $scope.inceItems = inceItems;
+
+        }, function(err) {
+            console.log(err);
+        });
+    };
+
+    initYljInfo();
+
+    $scope.actions = {
+        doRefresh: function() {
+            initYljInfo();
+            $scope.$broadcast('scroll.refreshComplete');
+        }
+    }
+
+
+}])
+.controller('userYiBalanceCtrl', ['$scope', 'Insurance', function($scope, Insurance) {
+
+    var initBcyljInfo = function() {
+        Insurance.getBcyljInfo({}).then(function(data) {
+            $scope.ince = data.results;
+            var inceItems = {}, key;
+            var sumProfileAmount = 0;
+            var total = {
+                sumProfileAmount: 0,
+                sumInterest: 0
+            };
+            for(var i = 0; i < data.results.inceItems.length; i++) {
+                key = data.results.inceItems[i].detailType;
+                data.results.inceItems[i].month = new Date(data.results.inceItems[i].month);
+                inceItems[ key ] = inceItems[ key ] || {list: [], key: key, title: data.results.inceItems[i].detailTitle};
+                inceItems[ key ].list.push(data.results.inceItems[i]);
+
+                if (data.results.inceItems[i].detailType.substring(data.results.inceItems[i].detailType.length -1) != '2') {
+                    total.sumProfileAmount += parseFloat(data.results.inceItems[i].price);
+                    total.sumInterest += parseFloat(data.results.inceItems[i].cycleInterest);
+                    
+                }
+            }
+            $scope.ince['total'] = total;
+
+            $scope.inceItems = inceItems;
+
+        }, function(err) {
+            console.log(err);
+        });
+    };
+
+
+    $scope.actions = {
+        doRefresh: function() {
+            initBcyljInfo();
+            $scope.$broadcast('scroll.refreshComplete');
+        }
+    }
+
+    initBcyljInfo();
+}])
 ;

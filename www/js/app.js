@@ -236,6 +236,24 @@ app
                 }
             }
         })
+        .state('user.yljbalance', {
+            url: '/yljbalance',
+            views: {
+                'userHome': {
+                    templateUrl: 'partials/user/yljbalance.html',
+                    controller: 'userYljBalanceCtrl'
+                }
+            }
+        })
+        .state('user.yibalance', {
+            url: '/yibalance',
+            views: {
+                'userHome': {
+                    templateUrl: 'partials/user/yibalance.html',
+                    controller: 'userYiBalanceCtrl'
+                }
+            }
+        })
         .state('user.helper', {
             url: '/helper',
             views: {
@@ -378,11 +396,20 @@ app
             }
         })
         .state('user.jiahao', {    
-            url: '/jiahao',
+            url: '/jiahao/{id:[0-9]+}',
             views: {
                 'userHome': {
                     templateUrl: 'partials/user/jiahao.html',
                     controller: 'userJiahao'
+                }
+            }
+        })
+        .state('user.jiahaoitem', {    
+            url: '/jiahaoitem/{id:[0-9a-z]+}',
+            views: {
+                'userHome': {
+                    templateUrl: 'partials/user/jiahaoitem.html',
+                    controller: 'userJiahaoItem'
                 }
             }
         })

@@ -1021,6 +1021,7 @@ angular.module('yiyangbao.controllers.backend', [])
             }
             else {
                 Consumption.getOne({_id: $stateParams.consId}).then(function (data) {
+                    
                     $scope.item = data.results;
                     $scope.item.receiptImgThumb = $scope.item.receiptImg.filter(function (img) {
                         if (img) {
